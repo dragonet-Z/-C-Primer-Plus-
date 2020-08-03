@@ -51,7 +51,7 @@ int main()
     }
    ```
    运行结果
-   ![]()
+   ![image1](image1.png)
 2. ```getchar()```，作用是击键等待
     这个方法不需要添加头文件
     通常来说一个getchar()已经足够，实际运行的时候则需要根据程序需要来多一个
@@ -67,7 +67,7 @@ int main()
     }
     ```
     运行结果
-    ![]()
+    ![image2](image2.png)
     在回车后程序就会直接消失~  
 
 # 第二章 C语言概述
@@ -87,7 +87,7 @@ int main (void)
 ```
 ### 1.1 程序讲解
 
-![]()
+![image3](image3.png)
 
 #### 1.1.1 头文件
 相当于将stdio.h的文件内所有内容都“黏贴”到该行的位置
@@ -273,7 +273,7 @@ int main(void)
 }
 ```
 程序的输出效果如图：
-![]()
+![image4](image4.png)
 这个程序里面，i和j变量都超过了规定的最大值，当他们达到能表示的最大值时，会重新从起始点开始
 
 ### 2.2 char类型
@@ -347,48 +347,88 @@ The code for A is 65.
 由此可见，%c可以打印一个字符，而%d可以打印字符对应的ASCⅡ码
 有符号char范围是-128~127，无符号char范围是0~255
 
+>省略_Bool类型（本人用的少）
+
 ### 2.3 float、double、long double类型
 C语言中的浮点数类型有float、double和long double类型，浮点数的表示方法有科学计数法、指数计数法等等，下面列出一些示例
+<center>计数法示例</center>
+
+|    数字    |   数字记数法    | 指数记数法 |
+| :--------: | :-------------: | :--------: |
+| 1000000000 |   $1×10^{9}$    |   1.0e9    |
+|   123000   |  $1.23×10^{5}$  |   1.23e5   |
+|   322.56   | $3.2256×10^{2}$ |  3.2256e2  |
+|  0.000056  |  $5.6×10^{-5}$  |   2.6e-5   |
+
+C标准规定，float至少能表示6位有效数字，取值范围为$10^{-37}~10^{37}$
+C语言提供了另一种浮点类型double（意为双精度），double的最小取值范围与float相同，一般情况下double占用64位，而不是32位
+C的第三种浮点类型是long double，以满足比double更高的精度要求
+
+#### 2.3.1 声明
+
+声明比较跟上面的类似
+```C
+float noah, jonah;
+double troble;
+float planck = 6.63e-34;
+long double gnp;
+```
+
+#### 2.3.2 浮点型变量
+
+浮点型变量基本形式：有符号数字+e/E
+如`-1.56E+12`、`2.87e-3`、`3.1415`、`.2`、`.8E-5`等
+默认情况下，编译器会假定浮点型常量是double类型的精度
+例如some是float变量，语句`some = 4.0*2.0;`
+这样的作法会使用双精度计算（4.0这些默认是double型），然后将乘积截断为float型的宽度，精度高，但会减慢程序的运行速度
+浮点数后加上不同的后缀可以覆盖他的默认类型设置
+
+|      后缀      |     类型      |
+| :------------: | :-----------: |
+|      f/F       |    float型    |
+|      l/L       | long double型 |
+| 无后缀（默认） |   double型    |
+
+#### 2.3.3 打印浮点值
+
+printf函数使用%f打印十进制计数法的float和double类型的浮点数，用%e打印指数，用%Lf、%Le来打印long double类型
+给不在函数原型中显示说明参数类型的函数（如printf）传递参数时，C编译器会把float类型的值自动转换成double类型
+
+```C
+/* showf_pt.c -- displays float value in two ways */
+#include <stdio.h>
+int main(void)
+{
+    float aboat = 32000.0;
+    double abet = 2.14e9;
+    long double dip = 5.32e-5;
+    
+    printf("%f can be written %e\n", aboat, aboat);
+    // 下一行要求编译器支持C99标准
+    printf("And it's %a in hexadecimal, powers of 2 notation\n", aboat);
+    printf("%f can be written %e\n", abet, abet);
+    printf("%Lf can be written %Le\n", dip, dip);
+    
+    return 0;
+}
+```
+输出结果
+![](image5.png)
 
 
+#### 2.3.4 浮点值的上溢与下溢
 
+>不懂，哭了(ㄒoㄒ)
 
+设系统最大float类型值为3.4E38
+运行下面的代码
+```C
+float toobig = 3.4E38 * 100.0f;
+printf ("%e\n", toobig);
+```
+打印出来的值会变成inf或infinity
+这是一种上溢的示例，当变量值超过类型的范围是就会发生这种现象
 
+>>下溢真的不懂，书上解释的好复杂，我就没笔记了
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+>复数和虚数部分我也没接触
